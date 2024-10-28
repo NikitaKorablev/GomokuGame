@@ -1,0 +1,67 @@
+# Общие файлы IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# IntelliJ IDEA workspace
+out/
+.idea/
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Папка сборки (например, для Maven или Gradle)
+target/
+build/
+
+# Логи и файлы настроек среды
+*.log
+.vscode/
+
+# Maven
+.mvn/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
+*.bat
+*.sh
+
+# JAR и прочие выходные файлы
+*.jar
+*.war
+*.ear
+
+# Конфигурация среды
+.env
+
+# Кэш Java
+*.class
+*.jar.cache
+*.java.cache
+*.jfx
+
+# Генерируемые Java файлы
+**/generated/
+logs/
+bin/
+debug/
+release/
+
+# Настройки JavaFX
+settings.gradle
+*.jmod
+*.jfx
+*.jlink
