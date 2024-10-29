@@ -1,4 +1,6 @@
-package com.gomoku.gomokugame.objects;
+package com.gomoku.gomokugame.global_objects;
+
+import com.gomoku.gomokugame.global_objects.enums.TableValue;
 
 import java.util.ArrayList;
 
@@ -56,5 +58,12 @@ public class GameTable {
 
         x = x + x_right; y = y + y_up;
         updateTmpAvailableChipCount(x, y, color, x_right, y_up);
+    }
+
+    @Override
+    public String toString() {
+        return "GameTable{" +
+                "table=" + table +
+                '}';
     }
 }

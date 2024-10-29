@@ -1,15 +1,16 @@
-package com.gomoku.gomokugame.objects;
+package com.gomoku.gomokugame.global_objects;
 
-import javafx.scene.control.Tab;
+import com.gomoku.gomokugame.global_objects.enums.TableValue;
+import javafx.scene.shape.Circle;
 
-import java.awt.*;
+import java.io.Serializable;
 
-public class Chip {
+public class Chip implements Serializable {
     private int x;
     private int y;
     private TableValue color;
 
-    Chip(int x, int y, TableValue color) {
+    public Chip(int x, int y, TableValue color) {
         this.x = x;
         this.y = y;
         this.color = color;
@@ -28,6 +29,15 @@ public class Chip {
         this.y = y;
     }
     public void setColor(TableValue color) { this.color = color; }
+
+    public Circle drawChip(TableValue color, double rad) {
+        Circle circle = new Circle(rad);
+        circle.setFill(color.value());
+        circle.setCenterX(rad);
+        circle.setCenterY(rad);
+
+        return circle;
+    }
 
     @Override
     public String toString() {

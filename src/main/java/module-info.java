@@ -11,4 +11,10 @@ module com.gomoku.gomokugame {
 
     opens com.gomoku.gomokugame to javafx.fxml;
     exports com.gomoku.gomokugame;
+    exports com.gomoku.gomokugame.global_objects;
+    exports com.gomoku.gomokugame.global_objects.intefaces;
+    opens com.gomoku.gomokugame.global_objects.intefaces to javafx.fxml;
+    opens com.gomoku.gomokugame.client to javafx.fxml;
+    exports com.gomoku.gomokugame.client;
+    exports com.gomoku.gomokugame.global_objects.enums;
 }
