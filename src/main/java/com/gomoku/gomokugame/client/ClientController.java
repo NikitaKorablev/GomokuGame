@@ -11,7 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.control.Label;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -63,7 +62,6 @@ public class ClientController implements UpdateGameState {
             Pane pane = table.get(chip.getX()).get(chip.getY());
             Circle circle = chip.drawChip(chip.getColor(), pane.getHeight() / 2);
             pane.getChildren().add(circle);
-//            System.out.println("");
         });
     }
 
@@ -80,6 +78,20 @@ public class ClientController implements UpdateGameState {
         Platform.runLater(() ->
             messageHolder.setText(message)
         );
+    }
+
+    @Override
+    public void startButtonToRestart() {
+        startButton.setOnMouseClicked(event -> {
+            nullifyTable();
+            gameController.nullifyTable();
+            startButton.setDisable(true);
+        });
+
+        Platform.runLater(() -> {
+            startButton.setText("Restart");
+            startButton.setDisable(false);
+        });
     }
 
     private void tableInit() {
@@ -102,10 +114,22 @@ public class ClientController implements UpdateGameState {
         }
     }
 
+    private void nullifyTable() {
+        Platform.runLater(() -> {
+            for (int i=0; i < TABLE_ROWS_COUNT; ++i) {
+                for (int j=0; j < TABLE_COLUMNS_COUNT; ++j) {
+                    table.get(i).get(j).getChildren().removeAll();
+                }
+            }
+        });
+    }
+
     private void setOnHoverEvent(Pane pane) {
         String originalColor = pane.getStyle();
         // Событие при наведении
         pane.setOnMouseEntered(event -> {
+            if (!pane.getChildren().isEmpty()) return;
+
             if (gameController.gameIsStarted && gameController.setChipIsAllow)
                 pane.setStyle("-fx-background-color: " + TableValue.GREY.toRgbString() +"; -fx-border-color: black;");
         });
@@ -118,11 +142,11 @@ public class ClientController implements UpdateGameState {
 
     private void setOnClickEvent(Pane pane, int i, int j) {
         pane.setOnMouseClicked(event  -> {
-            if (gameController == null || !gameController.setChipIsAllow) return;
+            if (gameController == null
+                    || !gameController.setChipIsAllow
+                    || !pane.getChildren().isEmpty()) return;
             boolean res = gameController.setChip(new Chip(i, j, gameController.playerColor));
             if (!res) System.err.println("Set chip: " + i + " " + j + ", is failed");
         });
     }
-
-
 }

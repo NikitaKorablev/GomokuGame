@@ -13,31 +13,29 @@ import com.gomoku.gomokugame.global_objects.Chip;
 import com.gomoku.gomokugame.global_objects.enums.GameStatus;
 import com.gomoku.gomokugame.global_objects.GameTable;
 import com.gomoku.gomokugame.global_objects.enums.TableValue;
-import io.reactivex.rxjava3.core.Single;
 
 public class Server extends UnicastRemoteObject implements RemoteService {
     private final GameTable table = new GameTable();
     private Boolean gameStarted = false;
     public static final int port=8080;
 
-    private final List<ClientCallback> clientsListeners = new ArrayList<>();;
+    private final List<ClientCallback> clientsListeners = new ArrayList<>();
 
     public Server() throws RemoteException {}
 
     @Override
     public Boolean setChip(Chip ch) throws RemoteException {
-//        if (!gameStarted) return false;
+        if (!gameStarted) return false;
         table.setChip(ch);
         try {
             sendUpdateToClients(ch);
-            if (table.isWin(ch)) notifyGameStatus(ch);
+            if (table.isWin(ch)) notifyGameFinish(ch);
         } catch (Exception err) {
             System.err.println(err.getMessage());
             return false;
         }
 
         return true;
-
     }
 
     @Override
@@ -46,6 +44,12 @@ public class Server extends UnicastRemoteObject implements RemoteService {
             gameStarted = true;
             notifyGameStarted();
         }
+    }
+
+    @Override
+    public void nullifyGame() throws RemoteException {
+        table.nullifyTable();
+        gameStarted = false;
     }
 
     //-----------------------------------------------------------------------
@@ -75,12 +79,12 @@ public class Server extends UnicastRemoteObject implements RemoteService {
         }
     }
 
-    public void notifyGameStatus(Chip chip) throws RemoteException {
+    public void notifyGameFinish(Chip chip) throws RemoteException {
         for (ClientCallback listener : clientsListeners) {
             try {
                 GameStatus status =
                         chip.getColor() == listener.getPlayerColor()? GameStatus.WIN : GameStatus.LOOSE;
-                listener.updateStatus(status);
+                listener.finishGame(status);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

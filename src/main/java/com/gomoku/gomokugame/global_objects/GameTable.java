@@ -61,6 +61,14 @@ public class GameTable {
         updateTmpAvailableChipCount(x, y, color, x_up, y_right);
     }
 
+    public void nullifyTable() {
+        for (int i=0; i < 15; ++i) {
+            for (int j=0; j < 15; ++j) {
+                table.get(i).set(j, TableValue.NULL);
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "GameTable{" +

@@ -43,7 +43,7 @@ public class ClientApp implements ClientCallback, Serializable {
     }
 
     @Override
-    public void updateStatus(GameStatus status) throws RemoteException {
+    public void finishGame(GameStatus status) throws RemoteException {
         if (status == GameStatus.WIN) {
             System.out.println("Игра завершена. Вы выйграли.");
             updater.setMessage("Игра завершена. Вы выйграли.");
@@ -53,6 +53,8 @@ public class ClientApp implements ClientCallback, Serializable {
         }
         gameIsStarted = false;
         setChipIsAllow = false;
+
+//        updater.startButtonToRestart();
     }
 
     @Override
@@ -91,6 +93,14 @@ public class ClientApp implements ClientCallback, Serializable {
             return server.setChip(chip);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void nullifyTable() {
+        try {
+            server.nullifyGame();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
