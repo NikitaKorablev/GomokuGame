@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.control.Label;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -28,12 +29,12 @@ public class ClientController implements UpdateGameState {
     private Button connectButton;
     @FXML
     private Button startButton;
+    @FXML
+    private Label messageHolder;
 
     @FXML
     public void initialize() throws Exception {
         startButton.setDisable(true);
-
-
     }
 
     @FXML
@@ -49,10 +50,11 @@ public class ClientController implements UpdateGameState {
     }
 
     @FXML
-    protected void onStartButtonClicked() {
-        if (gameController.startGame()) startButton.setDisable(true);
-
-        gameController.setChip(new Chip(1, 1, TableValue.BLACK));
+    public void onStartButtonClicked() {
+        if (!gameController.gameIsStarted) {
+            startButton.setDisable(true);
+            gameController.startGame();
+        }
     }
 
     @Override
@@ -63,6 +65,21 @@ public class ClientController implements UpdateGameState {
             pane.getChildren().add(circle);
 //            System.out.println("");
         });
+    }
+
+    @Override
+    public void onStartEvent() {
+        if (!gameController.gameIsStarted) {
+            gameController.gameIsStarted = true;
+            startButton.setDisable(true);
+        }
+    }
+
+    @Override
+    public void setMessage(String message) {
+        Platform.runLater(() ->
+            messageHolder.setText(message)
+        );
     }
 
     private void tableInit() {
@@ -86,30 +103,26 @@ public class ClientController implements UpdateGameState {
     }
 
     private void setOnHoverEvent(Pane pane) {
-        Color originalColor = Color.WHITE;
-        pane.setStyle("-fx-background-color: " + toRgbString(originalColor) + "; -fx-border-color: black;");
+        String originalColor = pane.getStyle();
         // Событие при наведении
-        pane.setOnMouseEntered(event ->
-                pane.setStyle("-fx-background-color: gray; -fx-border-color: black;")
-        );
+        pane.setOnMouseEntered(event -> {
+            if (gameController.gameIsStarted && gameController.setChipIsAllow)
+                pane.setStyle("-fx-background-color: " + TableValue.GREY.toRgbString() +"; -fx-border-color: black;");
+        });
         // Событие при выходе курсора
-        pane.setOnMouseExited(event ->
-                pane.setStyle("-fx-background-color: " + toRgbString(originalColor) + "; -fx-border-color: black;")
-        );
+        pane.setOnMouseExited(event -> {
+            if (gameController.gameIsStarted)
+                pane.setStyle(originalColor);
+        });
     }
 
     private void setOnClickEvent(Pane pane, int i, int j) {
         pane.setOnMouseClicked(event  -> {
-            if (gameController == null) return;
+            if (gameController == null || !gameController.setChipIsAllow) return;
             boolean res = gameController.setChip(new Chip(i, j, gameController.playerColor));
             if (!res) System.err.println("Set chip: " + i + " " + j + ", is failed");
         });
     }
 
-    private String toRgbString(Color color) {
-        int red = (int) (color.getRed() * 255);
-        int green = (int) (color.getGreen() * 255);
-        int blue = (int) (color.getBlue() * 255);
-        return String.format("rgb(%d, %d, %d);", red, green, blue);
-    }
+
 }

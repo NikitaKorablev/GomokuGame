@@ -32,7 +32,7 @@ public class Chip implements Serializable {
 
     public Circle drawChip(TableValue color, double rad) {
         Circle circle = new Circle(rad);
-        circle.setFill(color.value());
+        circle.setFill(color.getValue());
         circle.setCenterX(rad);
         circle.setCenterY(rad);
 

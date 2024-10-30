@@ -15,6 +15,8 @@ import com.gomoku.gomokugame.global_objects.enums.TableValue;
 public class ClientApp implements ClientCallback, Serializable {
     RemoteService server;
     TableValue playerColor = TableValue.NULL;
+    Boolean gameIsStarted = false;
+    Boolean setChipIsAllow = false;
     UpdateGameState updater;
 
     public ClientApp(UpdateGameState updater) {
@@ -25,8 +27,6 @@ public class ClientApp implements ClientCallback, Serializable {
             ClientCallback callback = (ClientCallback) UnicastRemoteObject.exportObject(this, 0);
             playerColor = server.registerListener(callback); // Регистрация на сервере
             System.out.println("Клиент зарегистрирован на сервере для получения обновлений.");
-
-            Thread.sleep(5000); // Ожидание завершения обработки для демонстрации
         } catch (Exception e) {
             System.err.println("Client not started. " + e.getMessage());
         }
@@ -34,13 +34,25 @@ public class ClientApp implements ClientCallback, Serializable {
 
     @Override
     public void onChipAdded(Chip chip) throws RemoteException {
-        System.out.println("New chip: " + chip.toString());
         updater.drawNewChip(chip);
     }
 
     @Override
+    public void setGameIsStarted() throws RemoteException {
+        updater.onStartEvent();
+    }
+
+    @Override
     public void updateStatus(GameStatus status) throws RemoteException {
-        System.out.println("New status " + status);
+        if (status == GameStatus.WIN) {
+            System.out.println("Игра завершена. Вы выйграли.");
+            updater.setMessage("Игра завершена. Вы выйграли.");
+        } else {
+            System.out.println("Игра заврешена. Вы проиграли.");
+            updater.setMessage("Игра завершена. Вы проиграли.");
+        }
+        gameIsStarted = false;
+        setChipIsAllow = false;
     }
 
     @Override
@@ -49,13 +61,26 @@ public class ClientApp implements ClientCallback, Serializable {
     }
 
     @Override
+    public void enableSetChip() throws RemoteException {
+        setChipIsAllow = true;
+        updater.setMessage("Ваш ход");
+    }
+
+    @Override
+    public void disableSetChip() throws RemoteException {
+        setChipIsAllow = false;
+        updater.setMessage("Ход противника");
+    }
+
+    @Override
     public TableValue getPlayerColor() throws RemoteException {
         return playerColor;
     }
 
-    public Boolean startGame() {
+    public void startGame() {
         try {
-            return server.startGame();
+            server.startGame();
+            gameIsStarted = true;
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -63,9 +88,7 @@ public class ClientApp implements ClientCallback, Serializable {
 
     public Boolean setChip(Chip chip) {
         try {
-            Boolean res = server.setChip(chip);
-            if (res) System.out.println("Игра завершена!");
-            return res;
+            return server.setChip(chip);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

@@ -5,7 +5,7 @@ import com.gomoku.gomokugame.global_objects.enums.TableValue;
 import java.util.ArrayList;
 
 public class GameTable {
-    private ArrayList<ArrayList<TableValue>> table = new ArrayList<>();
+    private final ArrayList<ArrayList<TableValue>> table = new ArrayList<>();
     private final static int availableChipCount = 4;
     private static int tmpAvailableChipCount = availableChipCount;
 
@@ -23,11 +23,10 @@ public class GameTable {
         return table;
     }
 
-    public boolean setChip(Chip chip) {
-        if (table.get(chip.getX()).get(chip.getY()) == TableValue.NULL) return false;
+    public void setChip(Chip chip) {
+        if (table.get(chip.getX()).get(chip.getY()) != TableValue.NULL) return;
 
         table.get(chip.getX()).set(chip.getY(), chip.getColor());
-        return true;
     }
 
     public boolean isWin(Chip chip) {
@@ -37,27 +36,29 @@ public class GameTable {
         return checkLine(chip, 0, 1);
     }
 
-    private boolean checkLine(Chip chip, int x_right, int y_up) {
-        int x = chip.getX()+x_right;
-        int y = chip.getY()-y_up;
-        updateTmpAvailableChipCount(x, y, chip.getColor(), x_right, y_up);
+    private boolean checkLine(Chip chip, int x_up, int y_right) {
+        int x = chip.getX()-x_up;
+        int y = chip.getY()+y_right;
+        updateTmpAvailableChipCount(x, y, chip.getColor(), x_up, y_right);
 
-        x = chip.getX()+(-x_right);
-        y = chip.getY()+(-y_up);
-        updateTmpAvailableChipCount(x, y, chip.getColor(), x_right, y_up);
+        x = chip.getX()-(-x_up);
+        y = chip.getY()+(-y_right);
+        updateTmpAvailableChipCount(x, y, chip.getColor(), -x_up, -y_right);
 
-        return tmpAvailableChipCount == 0;
+        boolean res = tmpAvailableChipCount == 0;
+        tmpAvailableChipCount = availableChipCount;
+        return res;
     }
 
-    private void updateTmpAvailableChipCount(int x, int y, TableValue color, int x_right, int y_up) {
+    private void updateTmpAvailableChipCount(int x, int y, TableValue color, int x_up, int y_right) {
         if (x < 0 || y < 0 || x >= 15 || y >= 15) return;
         if (table.get(x).get(y) == TableValue.NULL) return;
 
         if (table.get(x).get(y) == color) tmpAvailableChipCount--;
         if (tmpAvailableChipCount < 0) return;
 
-        x = x + x_right; y = y + y_up;
-        updateTmpAvailableChipCount(x, y, color, x_right, y_up);
+        x = x - x_up; y = y + y_right;
+        updateTmpAvailableChipCount(x, y, color, x_up, y_right);
     }
 
     @Override

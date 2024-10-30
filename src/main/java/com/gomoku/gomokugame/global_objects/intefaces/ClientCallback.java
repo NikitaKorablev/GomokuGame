@@ -9,7 +9,10 @@ import java.rmi.RemoteException;
 
 public interface ClientCallback extends Remote {
     void onChipAdded(Chip chip) throws RemoteException;
+    void setGameIsStarted() throws RemoteException;
     void updateStatus(GameStatus status) throws RemoteException;
     void setPlayerColor(TableValue color) throws RemoteException;
+    void enableSetChip() throws RemoteException;
+    void disableSetChip() throws RemoteException;
     TableValue getPlayerColor() throws RemoteException;
 }

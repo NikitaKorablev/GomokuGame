@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 
 public interface RemoteService extends Remote {
     Boolean setChip(Chip ch) throws RemoteException;
-    Boolean startGame() throws RemoteException;
+    void startGame() throws RemoteException;
 
     TableValue registerListener(ClientCallback listener) throws RemoteException;
     void unregisterClient(ClientCallback client) throws RemoteException;

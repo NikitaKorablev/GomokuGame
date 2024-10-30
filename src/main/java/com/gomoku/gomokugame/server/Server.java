@@ -27,30 +27,25 @@ public class Server extends UnicastRemoteObject implements RemoteService {
     @Override
     public Boolean setChip(Chip ch) throws RemoteException {
 //        if (!gameStarted) return false;
+        table.setChip(ch);
+        try {
+            sendUpdateToClients(ch);
+            if (table.isWin(ch)) notifyGameStatus(ch);
+        } catch (Exception err) {
+            System.err.println(err.getMessage());
+            return false;
+        }
 
-        return Single.fromCallable(() -> {
-            table.setChip(ch);
-            try {
-                sendUpdateToClients(ch);
-                if (table.isWin(ch)) notifyGameStatus(ch);
-            } catch (Exception err) {
-                System.err.println(err.getMessage());
-                return false;
-            }
+        return true;
 
-            return true;
-        }).blockingGet();
     }
 
     @Override
-    public Boolean startGame() throws RemoteException {
-        return Single.fromCallable(() -> {
-            if (clientsListeners.size() == 2) {
-                gameStarted = true;
-                return true;
-            }
-            return false;
-        }).blockingGet();
+    public void startGame() throws RemoteException {
+        if (clientsListeners.size() == 2) {
+            gameStarted = true;
+            notifyGameStarted();
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -72,6 +67,8 @@ public class Server extends UnicastRemoteObject implements RemoteService {
         for (ClientCallback listener : clientsListeners) {
             try {
                 listener.onChipAdded(chip);
+                if (chip.getColor() == listener.getPlayerColor()) listener.disableSetChip();
+                else listener.enableSetChip();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -84,6 +81,18 @@ public class Server extends UnicastRemoteObject implements RemoteService {
                 GameStatus status =
                         chip.getColor() == listener.getPlayerColor()? GameStatus.WIN : GameStatus.LOOSE;
                 listener.updateStatus(status);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void notifyGameStarted() throws RemoteException {
+        for(ClientCallback listener: clientsListeners) {
+            try {
+                listener.setGameIsStarted();
+                if (listener.getPlayerColor() == TableValue.WHITE) listener.enableSetChip();
+                else listener.disableSetChip();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

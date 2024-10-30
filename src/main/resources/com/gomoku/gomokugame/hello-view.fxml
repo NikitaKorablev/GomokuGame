@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gomoku.gomokugame.client.ClientController">
     <GridPane fx:id="tableGrid" prefHeight="500.0" prefWidth="500.0">
@@ -282,10 +283,22 @@
     </GridPane>
    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="50.0" prefWidth="500.0">
       <children>
-         <Button fx:id="connectButton" mnemonicParsing="false" onAction="#onConnectButtonClicked" prefWidth="100.0" text="Connect" />
+         <Button fx:id="connectButton" mnemonicParsing="false" onAction="#onConnectButtonClicked" prefWidth="100.0" text="Connect">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin></Button>
+         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Label fx:id="messageHolder" textAlignment="CENTER">
+                  <font>
+                     <Font size="13.0" />
+                  </font>
+               </Label>
+            </children>
+         </HBox>
          <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButtonClicked" prefWidth="100.0" text="Start">
             <HBox.margin>
-               <Insets left="150.0" />
+               <Insets />
             </HBox.margin>
          </Button>
       </children>

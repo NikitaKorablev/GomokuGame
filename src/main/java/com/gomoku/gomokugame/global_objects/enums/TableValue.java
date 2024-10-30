@@ -1,24 +1,34 @@
 package com.gomoku.gomokugame.global_objects.enums;
 
 import java.io.Serializable;
-import javafx.scene.paint.Color;
+import java.awt.Color;
 
 public enum TableValue implements Serializable {
-    BLACK, WHITE, NULL;
+    BLACK, WHITE, GREY, NULL;
 
-    public javafx.scene.paint.Paint value() {
+    public Color value() {
         return switch (this) {
             case BLACK -> Color.BLACK;
-            case WHITE -> Color.GREY;
+            case WHITE -> Color.GRAY;
+            case GREY -> new Color(60, 60, 60);
             case NULL -> throw new Error("NULL color");
         };
     }
 
-    @Override
-    public String toString() {
+    public javafx.scene.paint.Paint getValue() {
         return switch (this) {
-            case BLACK -> "Черный";
-            case WHITE -> "Белый";
+            case BLACK -> javafx.scene.paint.Color.BLACK;
+            case WHITE -> javafx.scene.paint.Color.GRAY;
+            case GREY -> javafx.scene.paint.Color.rgb(151, 151, 151);
+            case NULL -> throw new Error("NULL color");
+        };
+    }
+
+    public String toRgbString() {
+        return switch (this) {
+            case BLACK -> String.format("rgb(%d, %d, %d);", 0, 0, 0);
+            case WHITE -> String.format("rgb(%d, %d, %d);", 250, 250, 250);
+            case GREY -> String.format("rgb(%d, %d, %d);", 200, 200, 200);
             case NULL -> throw new Error("NULL color");
         };
     }
