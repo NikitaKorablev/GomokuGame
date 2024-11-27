@@ -1,4 +1,4 @@
-package com.gomoku.gomokugame.global_objects.enums;
+package com.gomoku.gomoku_game.global_objects.enums;
 
 import java.io.Serializable;
 import java.awt.Color;

@@ -1,6 +1,6 @@
-package com.gomoku.gomokugame.client;
+package com.gomoku.gomoku_game_rmi.client;
 
-import com.gomoku.gomokugame.global_objects.Chip;
+import com.gomoku.gomoku_game_rmi.global_objects.Chip;
 
 public interface UpdateGameState {
     void drawNewChip(Chip chip);

@@ -1,6 +1,6 @@
-package com.gomoku.gomokugame.global_objects;
+package com.gomoku.gomoku_game.global_objects;
 
-import com.gomoku.gomokugame.global_objects.enums.TableValue;
+import com.gomoku.gomoku_game.global_objects.enums.TableValue;
 import javafx.scene.shape.Circle;
 
 import java.io.Serializable;

@@ -1,7 +1,7 @@
-package com.gomoku.gomokugame.global_objects.intefaces;
+package com.gomoku.gomoku_game_rmi.global_objects.intefaces;
 
-import com.gomoku.gomokugame.global_objects.Chip;
-import com.gomoku.gomokugame.global_objects.enums.TableValue;
+import com.gomoku.gomoku_game_rmi.global_objects.Chip;
+import com.gomoku.gomoku_game_rmi.global_objects.enums.TableValue;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

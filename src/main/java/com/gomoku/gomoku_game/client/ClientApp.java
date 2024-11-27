@@ -1,4 +1,4 @@
-package com.gomoku.gomokugame.client;
+package com.gomoku.gomoku_game.client;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -6,11 +6,11 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-import com.gomoku.gomokugame.global_objects.intefaces.ClientCallback;
-import com.gomoku.gomokugame.global_objects.intefaces.RemoteService;
-import com.gomoku.gomokugame.global_objects.Chip;
-import com.gomoku.gomokugame.global_objects.enums.GameStatus;
-import com.gomoku.gomokugame.global_objects.enums.TableValue;
+import com.gomoku.gomoku_game.global_objects.intefaces.ClientCallback;
+import com.gomoku.gomoku_game.global_objects.intefaces.RemoteService;
+import com.gomoku.gomoku_game.global_objects.Chip;
+import com.gomoku.gomoku_game.global_objects.enums.GameStatus;
+import com.gomoku.gomoku_game.global_objects.enums.TableValue;
 
 public class ClientApp implements ClientCallback, Serializable {
     RemoteService server;

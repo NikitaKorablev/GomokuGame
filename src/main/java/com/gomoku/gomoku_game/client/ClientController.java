@@ -1,7 +1,7 @@
-package com.gomoku.gomokugame.client;
+package com.gomoku.gomoku_game.client;
 
-import com.gomoku.gomokugame.global_objects.Chip;
-import com.gomoku.gomokugame.global_objects.enums.TableValue;
+import com.gomoku.gomoku_game.global_objects.Chip;
+import com.gomoku.gomoku_game.global_objects.enums.TableValue;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
