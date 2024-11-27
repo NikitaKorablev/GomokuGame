@@ -1,4 +1,4 @@
-package com.gomoku.gomoku_game;
+package com.gomoku.gomoku_game_grpc;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -7,12 +7,12 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gomoku.gomoku_game.global_objects.intefaces.ClientCallback;
-import com.gomoku.gomoku_game.global_objects.intefaces.RemoteService;
-import com.gomoku.gomoku_game.global_objects.Chip;
-import com.gomoku.gomoku_game.global_objects.enums.GameStatus;
-import com.gomoku.gomoku_game.global_objects.GameTable;
-import com.gomoku.gomoku_game.global_objects.enums.TableValue;
+import com.gomoku.gomoku_game_grpc.global_objects.intefaces.ClientCallback;
+import com.gomoku.gomoku_game_grpc.global_objects.intefaces.RemoteService;
+import com.gomoku.gomoku_game_grpc.global_objects.Chip;
+import com.gomoku.gomoku_game_grpc.global_objects.enums.GameStatus;
+import com.gomoku.gomoku_game_grpc.global_objects.GameTable;
+import com.gomoku.gomoku_game_grpc.global_objects.enums.TableValue;
 
 public class Server extends UnicastRemoteObject implements RemoteService {
     private final GameTable table = new GameTable();

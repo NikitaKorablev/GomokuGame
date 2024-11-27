@@ -1,4 +1,4 @@
-package com.gomoku.gomoku_game;
+package com.gomoku.gomoku_game_grpc;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

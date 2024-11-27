@@ -1,7 +1,8 @@
-package com.gomoku.gomoku_game.global_objects.enums;
+package com.gomoku.gomoku_game_grpc.global_objects.enums;
 
 import java.io.Serializable;
 import java.awt.Color;
+import javafx.scene.paint.Paint;
 
 public enum TableValue implements Serializable {
     BLACK, WHITE, GREY, NULL;
@@ -15,7 +16,7 @@ public enum TableValue implements Serializable {
         };
     }
 
-    public javafx.scene.paint.Paint getValue() {
+    public Paint getValue() {
         return switch (this) {
             case BLACK -> javafx.scene.paint.Color.BLACK;
             case WHITE -> javafx.scene.paint.Color.GRAY;
